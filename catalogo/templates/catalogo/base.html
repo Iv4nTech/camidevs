@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block titulo %}CamiDevs{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'catalogo:inicio' %}">CamiDevs</a>
+    </nav>
+
+    <main>
+        {% block contenido %}{% endblock %}
+    </main>
+</body>
+</html>

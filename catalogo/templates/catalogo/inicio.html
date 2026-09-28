@@ -1,0 +1,14 @@
+{% extends 'catalogo/base.html' %}
+
+{% block titulo %}Inicio — CamiDevs{% endblock %}
+
+{% block contenido %}
+    <h1>{{ titulo }}</h1>
+    <ul>
+    {% for categoria in categorias %}
+        <li>{{ categoria }}</li>
+    {% empty %}
+        <li>No hay categorías todavía.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
