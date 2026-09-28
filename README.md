@@ -18,6 +18,14 @@ Creamos el proyecto `camidevs` con `django-admin startproject`, vemos para qué 
 
 ▶️ [Ver el vídeo](https://www.youtube.com/watch?v=Ed0S_ueLx0M)
 
+### 2 · URLs, views y templates
+
+[<img src="./miniaturas/urls-views-templates.jpg" alt="Crea tus primeras páginas web con Django: URLs, views y templates" width="480">](https://www.youtube.com/watch?v=Y3YfHACoSHU)
+
+Creamos las primeras páginas de `camidevs`: vemos el ciclo URL → view → template, definimos URLs con parámetros, usamos `render()` y `redirect()`, trabajamos con el Django Template Language (variables, filtros, `if` y `for`) y reutilizamos HTML con `{% include %}` y la herencia de templates. Además, usamos `{% url %}` con namespace para que las rutas nunca se rompan.
+
+▶️ [Ver el vídeo](https://www.youtube.com/watch?v=Y3YfHACoSHU)
+
 ---
 
 ## El proyecto final
