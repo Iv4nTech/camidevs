@@ -3,12 +3,22 @@
 {% block titulo %}Inicio — CamiDevs{% endblock %}
 
 {% block contenido %}
-    <h1>{{ titulo }}</h1>
+    <h2>Categorías</h2>
     <ul>
     {% for categoria in categorias %}
-        <li>{{ categoria }}</li>
+        <li>{{ categoria.nombre }}</li>
     {% empty %}
         <li>No hay categorías todavía.</li>
     {% endfor %}
     </ul>
+
+    <h2>Productos</h2>
+    {% for producto in productos %}
+        <a href="{% url 'catalogo:detalle_producto' id=producto.id %}">
+            <p>{{ producto.nombre }}</p>
+            <p>{{ producto.precio }} €</p>
+        </a>
+    {% empty %}
+        <p>No hay productos todavía.</p>
+    {% endfor %}
 {% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'catalogo/base.html' %}
+
+{% block titulo %}{{ producto.nombre }} — CamiDevs{% endblock %}
+
+{% block contenido %}
+    <p>{{ producto.categoria }}</p>
+    <h1>{{ producto.nombre }}</h1>
+    <p>{{ producto.precio }} €</p>
+    <p>{{ producto.descripcion|default:"Sin descripción." }}</p>
+
+    <a href="{% url 'catalogo:inicio' %}">Volver</a>
+{% endblock %}

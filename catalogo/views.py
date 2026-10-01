@@ -1,14 +1,16 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+
+from .models import Categoria, Producto
 
 
 def inicio(request):
     contexto = {
-        'titulo': 'CamiDevs',
-        'categorias': ['Camisetas', 'Sudaderas', 'Accesorios'],
+        'categorias': Categoria.objects.all(),
+        'productos': Producto.objects.filter(activo=True),
     }
     return render(request, 'catalogo/inicio.html', contexto)
 
 
 def detalle_producto(request, id):
-    return HttpResponse(f"Producto con ID: {id}")
+    producto = get_object_or_404(Producto, id=id, activo=True)
+    return render(request, 'catalogo/detalle_producto.html', {'producto': producto})
