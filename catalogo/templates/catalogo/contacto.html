@@ -1,0 +1,24 @@
+{% extends 'catalogo/base.html' %}
+
+{% block titulo %}Contacto — CamiDevs{% endblock %}
+
+{% block contenido %}
+    <h1>Contacto</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+            <div class="campo">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+                    <small id="{{ field.auto_id }}_helptext">{{ field.help_text }}</small>
+                {% endif %}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        <button type="submit">Enviar</button>
+    </form>
+{% endblock %}

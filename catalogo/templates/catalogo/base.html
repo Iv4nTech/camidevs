@@ -7,8 +7,15 @@
 <body>
     <nav>
         <a href="{% url 'catalogo:inicio' %}">CamiDevs</a>
+        <a href="{% url 'catalogo:contacto' %}">Contacto</a>
     </nav>
-
+    {% if messages %}
+        <ul class="mensajes">
+    {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+        </ul>
+    {% endif %}
     <main>
         {% block contenido %}{% endblock %}
     </main>

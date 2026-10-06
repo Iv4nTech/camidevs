@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 
-from .models import Categoria, Producto
+from .models import Categoria, Consulta, Producto
 
 admin.site.site_header = 'Administración de CamiDevs'
 admin.site.site_title = 'CamiDevs'
@@ -21,3 +21,8 @@ class ProductoAdmin(admin.ModelAdmin):
     def ocultar(self, request, queryset):
         ocultados = queryset.update(activo=False)
         self.message_user(request, f'Productos ocultados: {ocultados}.', messages.SUCCESS)
+
+@admin.register(Consulta)
+class ConsultaAdmin(admin.ModelAdmin):
+    list_display = ['nombre', 'email', 'asunto', 'leido', 'creado']
+    list_filter = ['leido', 'asunto']
