@@ -1,0 +1,15 @@
+{% extends 'catalogo/base.html' %}
+
+{% block titulo %}Consultas pendientes — CamiDevs{% endblock %}
+
+{% block contenido %}
+    <h1>Consultas pendientes</h1>
+
+    <ul>
+    {% for consulta in consultas %}
+        <li>{{ consulta.nombre }} — {{ consulta.mensaje }}</li>
+    {% empty %}
+        <li>No hay consultas pendientes.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

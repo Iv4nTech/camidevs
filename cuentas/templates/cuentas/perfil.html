@@ -1,0 +1,13 @@
+{% extends 'catalogo/base.html' %}
+
+{% block titulo %}Mi cuenta — CamiDevs{% endblock %}
+
+{% block contenido %}
+    <h1>Mi cuenta</h1>
+
+    <p>Usuario: {{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Cliente desde: {{ user.date_joined|date }}</p>
+
+    <a href="{% url 'password_change' %}">Cambiar contraseña</a>
+{% endblock %}

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'cuentas',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -126,3 +127,9 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+DEFAULT_FROM_EMAIL = 'web@camidevs.com'
+
+LOGIN_REDIRECT_URL = 'catalogo:inicio'
+LOGOUT_REDIRECT_URL = 'catalogo:inicio'
+LOGIN_URL = 'login'

@@ -8,6 +8,20 @@
     <nav>
         <a href="{% url 'catalogo:inicio' %}">CamiDevs</a>
         <a href="{% url 'catalogo:contacto' %}">Contacto</a>
+        {% if perms.catalogo.view_consulta %}
+            <a href="{% url 'catalogo:consultas_pendientes' %}">Consultas</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <span>Hola, {{ user.username }}</span>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Cerrar sesión</button>
+            </form>
+            <a href="{% url 'cuentas:perfil' %}">Mi cuenta</a>
+            {% else %}
+            <a href="{% url 'login' %}">Iniciar sesión</a>
+            <a href="{% url 'cuentas:registro' %}">Crear cuenta</a>
+        {% endif %}
     </nav>
     {% if messages %}
         <ul class="mensajes">

@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from .models import Categoria, Producto
+from .models import Categoria, Producto, Consulta
 from .forms import ContactoForm
+from django.contrib.auth.decorators import login_required, permission_required
 
 from django.core.mail import send_mail
 
@@ -37,3 +38,9 @@ def contacto(request):
         form = ContactoForm()
 
     return render(request, 'catalogo/contacto.html', {'form': form})
+
+@login_required
+@permission_required('catalogo.view_consulta', raise_exception=True)
+def consultas_pendientes(request):
+    consultas = Consulta.objects.filter(leido=False)
+    return render(request, 'catalogo/consultas_pendientes.html', {'consultas': consultas})
