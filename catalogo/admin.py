@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 
-from .models import Categoria, Consulta, Producto
+from .models import Categoria, Consulta, Etiqueta, Producto, Variante
 
 admin.site.site_header = 'Administración de CamiDevs'
 admin.site.site_title = 'CamiDevs'
@@ -16,6 +16,7 @@ class ProductoAdmin(admin.ModelAdmin):
     list_editable = ['precio']
     readonly_fields = ['creado']
     actions = ['ocultar']
+    filter_horizontal = ['etiquetas']
 
     @admin.action(description='Ocultar los productos seleccionados')
     def ocultar(self, request, queryset):
@@ -26,3 +27,10 @@ class ProductoAdmin(admin.ModelAdmin):
 class ConsultaAdmin(admin.ModelAdmin):
     list_display = ['nombre', 'email', 'asunto', 'leido', 'creado']
     list_filter = ['leido', 'asunto']
+
+admin.site.register(Etiqueta)
+
+@admin.register(Variante)
+class VarianteAdmin(admin.ModelAdmin):
+    list_display = ['producto', 'talla', 'color', 'stock']
+    list_filter = ['talla', 'producto__categoria']

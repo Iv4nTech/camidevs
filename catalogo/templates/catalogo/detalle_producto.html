@@ -8,5 +8,20 @@
     <p>{{ producto.precio }} €</p>
     <p>{{ producto.descripcion|default:"Sin descripción." }}</p>
 
+    <p>
+    {% for etiqueta in producto.etiquetas.all %}
+        #{{ etiqueta.nombre }}
+    {% endfor %}
+    </p>
+
+    <h2>Tallas y colores</h2>
+    <ul>
+    {% for variante in producto.variantes.all %}
+        <li>{{ variante.get_talla_display }} · {{ variante.color }} — {{ variante.stock }} en stock</li>
+    {% empty %}
+        <li>Agotado.</li>
+    {% endfor %}
+    </ul>
+
     <a href="{% url 'catalogo:inicio' %}">Volver</a>
 {% endblock %}
