@@ -6,6 +6,6 @@ app_name = 'cuentas'
 
 urlpatterns = [
     path('registro/', views.registro, name='registro'),
-    path('perfil/', views.perfil, name='perfil'),
+    path('perfil/', views.PerfilView.as_view(), name='perfil'),
     
 ]

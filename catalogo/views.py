@@ -1,59 +1,69 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from .models import Categoria, Producto, Consulta
-from .forms import ContactoForm
-from django.contrib.auth.decorators import login_required, permission_required
-
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.mail import send_mail
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView, ListView
 
-def inicio(request):
-    contexto = {
-        'categorias': Categoria.objects.all(),
-        'productos': Producto.objects.filter(activo=True),
-    }
-    return render(request, 'catalogo/inicio.html', contexto)
+from .forms import ContactoForm
+from .models import Categoria, Consulta, Producto
 
 
-def detalle_producto(request, id):
-    producto = get_object_or_404(Producto, id=id, activo=True)
-    return render(request, 'catalogo/detalle_producto.html', {'producto': producto})
+class InicioView(ListView):
+    queryset = Producto.objects.filter(activo=True)
+    context_object_name = 'productos'
+    template_name = 'catalogo/inicio.html'
 
-def contacto(request):
-    if request.method == 'POST':
-        form = ContactoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            datos = form.cleaned_data
-            send_mail(
-                f'Contacto web: {datos["asunto"]}',
-                f'De: {datos["nombre"]} ({datos["email"]})\n'
-                f'Pedido: {datos["numero_pedido"]}\n\n'
-                f'{datos["mensaje"]}',
-                'web@camidevs.com',
-                ['hola@camidevs.com'],
-            )
-            messages.success(request, 'Mensaje enviado. Te responderemos pronto.')
-            return redirect('catalogo:contacto')
-    else:
-        form = ContactoForm()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categorias'] = Categoria.objects.all()
+        return context
 
-    return render(request, 'catalogo/contacto.html', {'form': form})
 
-@login_required
-@permission_required('catalogo.view_consulta', raise_exception=True)
-def consultas_pendientes(request):
-    consultas = Consulta.objects.filter(leido=False)
-    return render(request, 'catalogo/consultas_pendientes.html', {'consultas': consultas})
+class DetalleProductoView(DetailView):
+    queryset = Producto.objects.filter(activo=True)
+    template_name = 'catalogo/detalle_producto.html'
 
-def buscar(request):
-    productos = Producto.objects.filter(activo=True)
-    q = request.GET.get('q', '')
-    color = request.GET.get('color', '')
 
-    if q:
-        productos = productos.filter(nombre__icontains=q)
-    if color:
-        productos = productos.filter(variantes__color__icontains=color).distinct()
+class ContactoView(CreateView):
+    form_class = ContactoForm
+    template_name = 'catalogo/contacto.html'
+    success_url = reverse_lazy('catalogo:contacto')
 
-    productos = productos.select_related('categoria')
-    return render(request, 'catalogo/buscar.html', {'productos': productos, 'q': q, 'color': color})
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        datos = form.cleaned_data
+        send_mail(
+            f'Contacto web: {datos["asunto"]}',
+            f'De: {datos["nombre"]} ({datos["email"]})\n'
+            f'Pedido: {datos["numero_pedido"]}\n\n'
+            f'{datos["mensaje"]}',
+            'web@camidevs.com',
+            ['hola@camidevs.com'],
+        )
+        messages.success(self.request, 'Mensaje enviado. Te responderemos pronto.')
+        return response
+
+
+class ConsultasPendientesView(PermissionRequiredMixin, ListView):
+    permission_required = 'catalogo.view_consulta'
+    queryset = Consulta.objects.filter(leido=False)
+    context_object_name = 'consultas'
+    template_name = 'catalogo/consultas_pendientes.html'
+
+
+class BuscarView(ListView):
+    template_name = 'catalogo/buscar.html'
+    context_object_name = 'productos'
+    paginate_by = 4
+
+    def get_queryset(self):
+        productos = Producto.objects.filter(activo=True)
+        q = self.request.GET.get('q', '')
+        color = self.request.GET.get('color', '')
+
+        if q:
+            productos = productos.filter(nombre__icontains=q)
+        if color:
+            productos = productos.filter(variantes__color__icontains=color).distinct()
+
+        return productos.select_related('categoria')

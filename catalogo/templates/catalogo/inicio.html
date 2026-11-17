@@ -14,7 +14,7 @@
 
     <h2>Productos</h2>
     {% for producto in productos %}
-        <a href="{% url 'catalogo:detalle_producto' id=producto.id %}">
+        <a href="{% url 'catalogo:detalle_producto' pk=producto.id %}">
             <p>{{ producto.nombre }}</p>
             <p>{{ producto.precio }} €</p>
         </a>

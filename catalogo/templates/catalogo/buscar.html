@@ -6,8 +6,8 @@
     <h1>Buscar</h1>
 
     <form method="get">
-        <input type="search" name="q" value="{{ q }}" placeholder="Nombre">
-        <input type="text" name="color" value="{{ color }}" placeholder="Color">
+        <input type="search" name="q" value="{{ request.GET.q }}" placeholder="Nombre">
+        <input type="text" name="color" value="{{ request.GET.color }}" placeholder="Color">
         <button type="submit">Buscar</button>
     </form>
 
@@ -17,8 +17,19 @@
             <a href="{% url 'catalogo:detalle_producto' producto.id %}">{{ producto.nombre }}</a>
             — {{ producto.categoria }}
         </li>
-    {% empty %}
+        {% empty %}
         <li>No hay productos con esa búsqueda.</li>
-    {% endfor %}
+        {% endfor %}
     </ul>
+    {% if is_paginated %}
+   <div class="paginacion">
+       {% if page_obj.has_previous %}
+           <a href="{% querystring page=page_obj.previous_page_number %}">Anterior</a>
+       {% endif %}
+       <span>Página {{ page_obj.number }} de {{ paginator.num_pages }}</span>
+       {% if page_obj.has_next %}
+           <a href="{% querystring page=page_obj.next_page_number %}">Siguiente</a>
+       {% endif %}
+   </div>
+{% endif %}
 {% endblock %}
