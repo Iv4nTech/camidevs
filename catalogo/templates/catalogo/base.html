@@ -8,6 +8,7 @@
     <nav>
         <a href="{% url 'catalogo:inicio' %}">CamiDevs</a>
         <a href="{% url 'catalogo:contacto' %}">Contacto</a>
+        <a href="{% url 'catalogo:buscar' %}">Buscar</a>
         {% if perms.catalogo.view_consulta %}
             <a href="{% url 'catalogo:consultas_pendientes' %}">Consultas</a>
         {% endif %}

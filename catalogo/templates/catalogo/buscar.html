@@ -1,0 +1,24 @@
+{% extends 'catalogo/base.html' %}
+
+{% block titulo %}Buscar — CamiDevs{% endblock %}
+
+{% block contenido %}
+    <h1>Buscar</h1>
+
+    <form method="get">
+        <input type="search" name="q" value="{{ q }}" placeholder="Nombre">
+        <input type="text" name="color" value="{{ color }}" placeholder="Color">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <ul>
+    {% for producto in productos %}
+        <li>
+            <a href="{% url 'catalogo:detalle_producto' producto.id %}">{{ producto.nombre }}</a>
+            — {{ producto.categoria }}
+        </li>
+    {% empty %}
+        <li>No hay productos con esa búsqueda.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

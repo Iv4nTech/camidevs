@@ -10,7 +10,7 @@
     <p>Cliente desde: {{ user.date_joined|date }}</p>
 
     <h2>Mis pedidos</h2>
-    {% for pedido in user.pedidos.all %}
+    {% for pedido in pedidos %}
         <h3>{{ pedido }} — {{ pedido.get_estado_display }}</h3>
         <ul>
         {% for linea in pedido.lineas.all %}

@@ -1,6 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth import login
+from django.db.models import Prefetch
 from django.shortcuts import render, redirect
+
+from pedidos.models import LineaPedido
 
 from .forms import RegistroForm
 from django.contrib.auth.decorators import login_required
@@ -20,4 +23,11 @@ def registro(request):
 
 @login_required
 def perfil(request):
-    return render(request, 'cuentas/perfil.html')
+    pedidos = (
+        request.user.pedidos
+        .select_related('factura')
+        .prefetch_related(
+            Prefetch('lineas', queryset=LineaPedido.objects.select_related('variante__producto'))
+        )
+    )
+    return render(request, 'cuentas/perfil.html', {'pedidos': pedidos})

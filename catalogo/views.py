@@ -44,3 +44,16 @@ def contacto(request):
 def consultas_pendientes(request):
     consultas = Consulta.objects.filter(leido=False)
     return render(request, 'catalogo/consultas_pendientes.html', {'consultas': consultas})
+
+def buscar(request):
+    productos = Producto.objects.filter(activo=True)
+    q = request.GET.get('q', '')
+    color = request.GET.get('color', '')
+
+    if q:
+        productos = productos.filter(nombre__icontains=q)
+    if color:
+        productos = productos.filter(variantes__color__icontains=color).distinct()
+
+    productos = productos.select_related('categoria')
+    return render(request, 'catalogo/buscar.html', {'productos': productos, 'q': q, 'color': color})
